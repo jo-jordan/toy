@@ -1,7 +1,8 @@
 <template>
   <div class="login-container">
+    <transition name="button"><el-button class="login-button" v-if="show" @click.native.prevent="handleLogin">a</el-button></transition>
     <transition name="card">
-      <el-card class="login-card" v-if="show">
+      <el-card class="login-card" v-if="!show">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
           <h3 class="title">vue-admin-template</h3>
           <el-form-item prop="username">
@@ -61,7 +62,7 @@ export default {
       }
     }
     return {
-      show: true,
+      show: false,
       loginForm: {
         username: 'admin',
         password: 'admin'
@@ -153,10 +154,22 @@ $light_gray:#303030;
 
 @-webkit-keyframes show-login-card {
   0% {top: 10%; left: 90%; -ms-transform: translate(-10%, -90%); transform: translate(-10%, -90%); border-radius: 400px; width: 40px; height: 40px;}
-  25% {top: 30%; left: 80%; -ms-transform: translate(-30%, -80%); transform: translate(-30%, -80%); border-radius: 300px; width: 100px; height: 320px;}
-  50% {top: 50%; left: 70%; -ms-transform: translate(-50%, -70%); transform: translate(-50%, -70%); border-radius: 150px; width: 200px; height: 560px;}
-  75% {top: 60%; left: 60%; -ms-transform: translate(-60%, -60%); transform: translate(-60%, -60%); border-radius: 80px; width: 300px; height: 690px;}
+  // 25% {top: 30%; left: 80%; -ms-transform: translate(-30%, -80%); transform: translate(-30%, -80%); border-radius: 300px; width: 100px; height: 320px;}
+  // 50% {top: 50%; left: 70%; -ms-transform: translate(-50%, -70%); transform: translate(-50%, -70%); border-radius: 150px; width: 200px; height: 560px;}
+  // 75% {top: 60%; left: 60%; -ms-transform: translate(-60%, -60%); transform: translate(-60%, -60%); border-radius: 80px; width: 300px; height: 690px;}
   100% {top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); border-radius: 20px; width: 600px; height: 800px;}
+}
+
+.login-button {
+  top: 10%;
+  left: 90%;
+  transform: translate(-10%, -90%);
+  border-radius: 400px;
+  width: 40px;
+  height: 40px;
+  -ms-transform: translate(-10%, -90%);
+  margin: 0;
+  position: absolute;
 }
 
 .login-card {
@@ -171,19 +184,38 @@ $light_gray:#303030;
   position: absolute;
 }
 
-.card-leave-active {
+.button-enter-active {
   -webkit-animation-name: show-login-card;
-  -webkit-animation-timing-function: linear;
+  -webkit-animation-timing-function: ease;
   -webkit-animation-duration: 0.48s;
   -webkit-animation-fill-mode: forwards;
   animation-direction: reverse;
 }
-.card-enter-active {
+
+.button-leave-active {
   -webkit-animation-name: show-login-card;
-  -webkit-animation-timing-function: linear;
+  -webkit-animation-timing-function: ease;
   -webkit-animation-duration: 0.48s;
   -webkit-animation-fill-mode: forwards;
 }
+
+.card-enter-active {
+  -webkit-animation-name: show-login-card;
+  -webkit-animation-timing-function: ease;
+  -webkit-animation-duration: 0.48s;
+  -webkit-animation-fill-mode: forwards;
+}
+
+.card-leave-active {
+  -webkit-animation-name: show-login-card;
+  -webkit-animation-timing-function: ease;
+  -webkit-animation-duration: 0.48s;
+  -webkit-animation-fill-mode: forwards;
+  animation-direction: reverse;
+}
+
+
+
 .login-container {
   position: relative;
   height: 100%;
