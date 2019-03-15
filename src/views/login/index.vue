@@ -1,6 +1,6 @@
 <template>
   <div class="login-container">
-    <transition name="button"><el-button class="login-button" v-if="show" @click.native.prevent="handleLogin">a</el-button></transition>
+    <transition name="button"><el-button class="login-button" v-if="show" @click.native.prevent="handleOpenLoginDialog">M</el-button></transition>
     <transition name="card">
       <el-card class="login-card" v-if="!show">
         <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
@@ -36,6 +36,56 @@
             <span> password: admin</span>
           </div>
         </el-form>
+        <svg width="500" height="150" viewBox="0 0 500 250">
+          <path id="motionPath" fill="none" stroke="#000000" stroke-miterlimit="10" d="
+            M 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200
+            m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200 m 10,0 v 200 m 10,0 v -200
+            M 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200
+            m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200 m 0,10 h 200 m 0,10 h -200"/>
+          <circle id="circle" r="10" cx="0" cy="0" fill="tomato" />
+          <animateMotion 
+                  xlink:href="#circle"
+                  dur="5s"
+                  begin="0s"
+                  fill="freeze"
+                  repeatCount="indefinite">
+            <mpath xlink:href="#motionPath" />
+          </animateMotion>
+          <circle id="orange-circle-1" r="10" cx="50" cy="50" fill="orange" />
+          <circle id="orange-circle-2" r="10" cx="80" cy="50" fill="orange" />
+          <circle id="orange-circle-3" r="10" cx="110" cy="50" fill="orange" />
+          
+          <animate 
+                  xlink:href="#orange-circle-1"
+                  attributeName="cy"
+                  dur="0.8s"
+                  begin="click"
+                  fill="remove"
+                  values="50; 40; 30; 40; 50;"
+                  calcMode="paced"
+                  repeatCount="indefinite"
+                  id="circle-1-anim" />
+          <animate 
+                  xlink:href="#orange-circle-2"
+                  attributeName="cy"
+                  dur="0.8s"
+                  begin="circle-1-anim.begin + 0.4s"
+                  fill="remove"
+                  values="50; 40; 30; 40; 50;"
+                  calcMode="paced"
+                  repeatCount="indefinite"
+                  id="circle-2-anim" />
+          <animate 
+                  xlink:href="#orange-circle-3"
+                  attributeName="cy"
+                  dur="0.8s"
+                  begin="circle-2-anim.begin + 0.4s"
+                  fill="remove"
+                  values="50; 40; 30; 40; 50;"
+                  calcMode="paced"
+                  repeatCount="indefinite"
+                  id="circle-3-anim" />
+        </svg>
       </el-card>
     </transition>
   </div>
@@ -92,22 +142,28 @@ export default {
         this.pwdType = 'password'
       }
     },
-    handleLogin() {
-      // this.$refs.loginForm.validate(valid => {
-      //   if (valid) {
-      //     this.loading = true
-      //     this.$store.dispatch('Login', this.loginForm).then(() => {
-      //       this.loading = false
-      //       this.$router.push({ path: this.redirect || '/' })
-      //     }).catch(() => {
-      //       this.loading = false
-      //     })
-      //   } else {
-      //     console.log('error submit!!')
-      //     return false
-      //   }
-      // })
+    handleOpenLoginDialog() {
       this.show = !this.show
+    },
+    handleLogin() {
+      this.show = !this.show
+      let loginForm = this.$refs.loginForm
+      setTimeout(() => {
+        loginForm.validate(valid => {
+          if (valid) {
+            this.loading = true
+            this.$store.dispatch('Login', this.loginForm).then(() => {
+              this.loading = false
+              this.$router.push({ path: this.redirect || '/' })
+            }).catch(() => {
+              this.loading = false
+            })
+          } else {
+            console.log('error submit!!')
+            return false
+          }
+        })
+      }, 480)
     }
   }
 }
@@ -153,21 +209,43 @@ $dark_gray:#889aa4;
 $light_gray:#303030;
 
 @-webkit-keyframes show-login-card {
-  0% {top: 10%; left: 90%; -ms-transform: translate(-10%, -90%); transform: translate(-10%, -90%); border-radius: 400px; width: 40px; height: 40px;}
+  0% {
+      top: 10%;
+      left: 90%;
+      -moz-transform: translate(-10%, -90%);
+      -webkit-transform: translate(-10%, -90%);
+      -o-transform: translate(-10%, -90%);
+      transform: translate(-10%, -90%);
+      border-radius: 400px;
+      width: 40px;
+      height: 40px;
+    }
   // 25% {top: 30%; left: 80%; -ms-transform: translate(-30%, -80%); transform: translate(-30%, -80%); border-radius: 300px; width: 100px; height: 320px;}
   // 50% {top: 50%; left: 70%; -ms-transform: translate(-50%, -70%); transform: translate(-50%, -70%); border-radius: 150px; width: 200px; height: 560px;}
   // 75% {top: 60%; left: 60%; -ms-transform: translate(-60%, -60%); transform: translate(-60%, -60%); border-radius: 80px; width: 300px; height: 690px;}
-  100% {top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); border-radius: 20px; width: 600px; height: 800px;}
+  100% {
+      top: 50%;
+      left: 50%;
+      -moz-transform: translate(-50%, -50%);
+      -webkit-transform: translate(-50%, -50%);
+      -o-transform: translate(-10%, -90%);
+      transform: translate(-50%, -50%);
+      border-radius: 20px;
+      width: 600px;
+      height: 800px;
+    }
 }
 
 .login-button {
   top: 10%;
   left: 90%;
-  transform: translate(-10%, -90%);
   border-radius: 400px;
   width: 40px;
   height: 40px;
-  -ms-transform: translate(-10%, -90%);
+  -webkit-transform: translate(-10%, -90%);
+  -moz-transform: translate(-10%, -90%);
+  -o-transform: translate(-10%, -90%);
+  transform: translate(-10%, -90%);
   margin: 0;
   position: absolute;
 }
@@ -175,45 +253,52 @@ $light_gray:#303030;
 .login-card {
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
   border-radius: 20px;
   width: 600px;
   height: 800px;
-  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -moz-transform: translate(-50%, -50%);
+  -o--transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   margin: 0;
   position: absolute;
 }
 
 .button-enter-active {
   -webkit-animation-name: show-login-card;
-  -webkit-animation-timing-function: ease;
+  -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-duration: 0.48s;
   -webkit-animation-fill-mode: forwards;
-  animation-direction: reverse;
+  -webkit-animation-direction: reverse;
 }
 
 .button-leave-active {
   -webkit-animation-name: show-login-card;
-  -webkit-animation-timing-function: ease;
+  -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-duration: 0.48s;
   -webkit-animation-fill-mode: forwards;
 }
 
 .card-enter-active {
   -webkit-animation-name: show-login-card;
-  -webkit-animation-timing-function: ease;
+  -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-duration: 0.48s;
   -webkit-animation-fill-mode: forwards;
 }
 
 .card-leave-active {
   -webkit-animation-name: show-login-card;
-  -webkit-animation-timing-function: ease;
+  -webkit-animation-timing-function: ease-in-out;
   -webkit-animation-duration: 0.48s;
   -webkit-animation-fill-mode: forwards;
-  animation-direction: reverse;
+  -webkit-animation-direction: reverse;
 }
 
+svg {
+  border: 3px solid #eee;
+  display: block;
+  margin: 1em auto;
+}
 
 
 .login-container {
